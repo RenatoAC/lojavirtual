@@ -8,13 +8,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.renatoac.lojavirtual.domain.Categoria;
+import com.renatoac.lojavirtual.domain.Produto;
 import com.renatoac.lojavirtual.repositories.CategoriaRepository;
+import com.renatoac.lojavirtual.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class LojavirtualApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private ProdutoRepository produtoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LojavirtualApplication.class, args);
@@ -27,7 +31,20 @@ public class LojavirtualApplication implements CommandLineRunner {
 		Categoria cat2 = new Categoria(null, "Bermudas");
 		Categoria cat3 = new Categoria(null, "Vestidos");
 		
+		Produto p1 = new Produto(null, "Camiseta Mickey", 40.00);
+		Produto p2 = new Produto(null, "Bermuda Pluto", 45.00);
+		Produto p3 = new Produto(null, "Vestido Minnie", 60.00);
+		
+		cat1.getProdutos().addAll(Arrays.asList(p1));
+		cat2.getProdutos().addAll(Arrays.asList(p2));
+		cat3.getProdutos().addAll(Arrays.asList(p3));
+		
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat3));
+		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 	}
 
 }
