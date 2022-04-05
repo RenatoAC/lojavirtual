@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.renatoac.lojavirtual.domain.Categoria;
 import com.renatoac.lojavirtual.domain.Cidade;
+import com.renatoac.lojavirtual.domain.Cliente;
+import com.renatoac.lojavirtual.domain.Endereco;
 import com.renatoac.lojavirtual.domain.Estado;
 import com.renatoac.lojavirtual.domain.Produto;
+import com.renatoac.lojavirtual.domain.enums.TipoCliente;
 import com.renatoac.lojavirtual.repositories.CategoriaRepository;
 import com.renatoac.lojavirtual.repositories.CidadeRepository;
+import com.renatoac.lojavirtual.repositories.ClienteRepository;
+import com.renatoac.lojavirtual.repositories.EnderecoRepository;
 import com.renatoac.lojavirtual.repositories.EstadoRepository;
 import com.renatoac.lojavirtual.repositories.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class LojavirtualApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LojavirtualApplication.class, args);
@@ -67,6 +76,18 @@ public class LojavirtualApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", 
+				"36378912377", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("92363323", "93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Jardim", "100", "Casa", "Centro", "57309478", cli1, c1);
+		Endereco e2 = new Endereco(null, "Rua Norte", "130", "Casa", "Centro", "57330000", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
 	}
 
